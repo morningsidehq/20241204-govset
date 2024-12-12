@@ -1,0 +1,165 @@
+[
+    {
+        "id": 1,
+        "contract_number": "4DE0E3DC-7735-45C8",
+        "title": "VDOT ADMINISTERED — LOCALLY FUNDED PROJECT ADMINISTRATION AGREEMENT",
+        "description": "Project administration agreement for construction improvements in Town of Appomattox",
+        "status": "active",
+        
+        "value": 0,
+        "spent_to_date": 0,
+        
+        "created_at": "2022-10-28T10:42:59-04:00",
+        "updated_at": "2022-11-16T14:36:17-04:00",
+        "start_date": "2022-10-28",
+        "end_date": "2024-12-31",
+        
+        "contractor_name": "Virginia Department of Transportation",
+        "contractor_contact_name": "Daniel J. Brown",
+        "contractor_email": "Daniel.Brown@VDOT.Virginia.gov",
+        "contractor_phone": "434-352-6675",
+        
+        "department_name": "Town of Appomattox",
+        "project_code": "6131-165-659",
+        
+        "contract_manager_name": "Richard Terry McGhee",
+        "approval_status": "approved",
+        "approved_by": "Angel Deem",
+        "approved_at": "2022-11-16T14:36:17-04:00",
+        
+        "documents": [
+            {
+                "name": "Original Contract",
+                "type": "pdf",
+                "size": "2.3MB"
+            },
+            {
+                "name": "Town Resolution",
+                "type": "pdf",
+                "size": "856KB"
+            },
+            {
+                "name": "Appendix A - Funding",
+                "type": "pdf",
+                "size": "1.1MB"
+            }
+        ],
+        
+        "tags": ["infrastructure", "construction", "VDOT", "local-government"],
+        "notes": "Project Number: 6131-165-659, UPC 111306. Includes construction of pedestrian lights as referenced on plan sheets 10(1) — 10(6).",
+        "version": 1
+    },
+    {
+        "id": 2,
+        "contract_number": "SHENTEL-2012-001",
+        "title": "Cable Television Franchise Agreement",
+        "description": "Franchise agreement renewal for cable television services in Town of Appomattox",
+        "status": "active",
+        
+        "value": "3% of Gross Subscriber Revenues",
+        "spent_to_date": 0,
+        
+        "created_at": "2012-03-07T00:00:00-04:00",
+        "updated_at": "2012-06-19T00:00:00-04:00",
+        "start_date": "2012-06-09",
+        "end_date": "2027-06-08",
+        
+        "contractor_name": "Shentel Cable Company",
+        "contractor_contact_name": "Vice President — Infrastructure Affairs and Regulatory",
+        "contractor_email": null,
+        "contractor_phone": "(540) 984-5187",
+        
+        "department_name": "Town of Appomattox",
+        "project_code": "FRANCHISE-2012",
+        
+        "contract_manager_name": "Paul D. Harvey",
+        "approval_status": "approved",
+        "approved_by": "Paul D. Harvey",
+        "approved_at": "2012-06-19T00:00:00-04:00",
+        
+        "documents": [
+            {
+                "name": "Original Franchise Agreement",
+                "type": "pdf",
+                "size": "1.2MB"
+            },
+            {
+                "name": "Resolution No. 2012-001",
+                "type": "pdf",
+                "size": "856KB"
+            }
+        ],
+        
+        "tags": ["franchise", "cable-tv", "telecommunications", "utilities"],
+        "notes": "15-year franchise renewal. Includes corporate restructuring notice: conversion to LLC and merger into Shenandoah Cable Television, LLC. Original agreement dated June 9, 1997.",
+        "version": 2,
+        
+        "special_terms": {
+            "franchise_fee": "3% of Gross Subscriber Revenues",
+            "insurance_requirements": {
+                "general_liability": 1000000,
+                "automotive_liability": 500000,
+                "workers_comp": "Required"
+            },
+            "service_requirements": {
+                "density_threshold": "40 homes per mile",
+                "service_timeline": "60 days",
+                "annexed_areas": "18 months"
+            }
+        }
+    },
+    {
+        "id": 3,
+        "contract_number": "CW-2020-001",
+        "title": "Waste Management Services Agreement",
+        "description": "Contract amendment for waste management services with County Waste Southwest Virginia, LLC",
+        "status": "active",
+        
+        "value": "Variable with 6.9% CPI increase for 2023-2024",
+        "spent_to_date": 0,
+        
+        "created_at": "2020-07-19T00:00:00-04:00",
+        "updated_at": "2023-05-01T00:00:00-04:00",
+        "start_date": "2020-07-19",
+        "end_date": "2026-07-18",
+        
+        "contractor_name": "County Waste Southwest Virginia, LLC",
+        "contractor_contact_name": "Randy Deming",
+        "contractor_email": null,
+        "contractor_phone": null,
+        "contractor_title": "RVP",
+        
+        "department_name": "Town of Appomattox",
+        "project_code": "WASTE-2020",
+        
+        "contract_manager_name": "Appomattox Town Manager/COO",
+        "approval_status": "approved",
+        "approved_by": "Appomattox Town Manager/COO",
+        "approved_at": "2023-05-01T00:00:00-04:00",
+        
+        "documents": [
+            {
+                "name": "Contract Amendment",
+                "type": "pdf",
+                "size": "256KB"
+            }
+        ],
+        
+        "tags": ["waste-management", "municipal-services", "utilities"],
+        "notes": "Contract extended for additional 3 years. CPI increase of 6.9% applied for period July 1, 2023 - June 30, 2024 based on Garbage and Trash Index.",
+        "version": 2,
+        
+        "amendments": [
+            {
+                "date": "2023-05-01",
+                "type": "extension",
+                "details": "Extended for 3 years until July 18, 2026"
+            },
+            {
+                "date": "2023-05-01",
+                "type": "rate_adjustment",
+                "details": "6.9% CPI increase for July 1, 2023 - June 30, 2024"
+            }
+        ]
+    }
+] 

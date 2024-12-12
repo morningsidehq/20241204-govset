@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contract Management | Govset</title>
+    <link rel="icon" type="image/png" href="../mfc-b.png">
+    <script src="https://unpkg.com/@supabase/supabase-js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/modern-normalize">
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/light.css"/>
+    
+    <style>
+        @font-face {
+            font-family: 'Berkeley Mono';
+            src: url('../fonts/BerkeleyMonoTrial-Regular.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        :root {
+            --primary: #000000;
+            --text: #ffffff;
+            --accent: #2B6AEE;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --spacing: 1.5rem;
+            --border-color: rgba(255,255,255,0.2);
+        }
+
+        body {
+            font-family: 'Berkeley Mono', monospace;
+            background: var(--primary);
+            color: var(--text);
+            line-height: 1.6;
+            font-size: 14px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .layout {
+            display: flex;
+            flex: 1;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            border-right: 1px solid var(--border-color);
+            padding: var(--spacing);
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-header img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .sidebar-header .title-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header .brand {
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+
+        .sidebar-header .subtitle {
+            font-size: 0.75em;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            opacity: 0.7;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: var(--spacing);
+        }
+
+        /* Contract Controls */
+        .contract-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text);
+            font-family: 'Berkeley Mono', monospace;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .add-contract-btn {
+            background: var(--accent);
+            color: var(--primary);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            font-family: 'Berkeley Mono', monospace;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .status-active {
+            background: var(--success);
+            color: var(--primary);
+        }
+
+        .status-pending {
+            background: var(--warning);
+            color: var(--primary);
+        }
+
+        .status-expired {
+            background: var(--danger);
+            color: var(--primary);
+        }
+
+        /* Contract Cards */
+        .contracts-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .contract-card {
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.02);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .contract-card:hover {
+            border-color: var(--accent);
+        }
+
+        .contract-header {
+            flex: 1;
+        }
+
+        .contract-body {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex: 2;
+        }
+
+        .contract-details {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .contract-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .detail-label {
+            opacity: 0.7;
+            font-size: 0.85em;
+        }
+
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: var(--spacing);
+            text-align: center;
+            font-size: 0.85em;
+            margin-top: auto;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: var(--primary);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 1.5em;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text);
+            font-family: 'Berkeley Mono', monospace;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--text);
+            text-decoration: none;
+            border: 1px solid var(--border-color);
+            margin-bottom: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            border-color: var(--text);
+            text-decoration: none;
+        }
+
+        /* Agency CTA */
+        .agency-cta {
+            border: 1px solid var(--border-color);
+            padding: var(--spacing);
+            margin-top: 2rem;
+        }
+
+        .agency-cta button {
+            background: var(--accent);
+            color: var(--primary);
+            border: none;
+            padding: 0.75rem 1rem;
+            width: 100%;
+            cursor: pointer;
+            font-family: 'Berkeley Mono', monospace;
+            margin-top: 1rem;
+        }
+
+        /* Responsive Layout */
+        @media (max-width: 768px) {
+            .layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: 1rem;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .contract-controls {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+
+            .add-contract-btn {
+                width: 100%;
+            }
+
+            .contract-card {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .contract-card > div:last-child {
+                text-align: left;
+            }
+
+            /* Modal Adjustments */
+            .modal-content {
+                width: 95%;
+                margin: 1rem;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+
+            .form-group {
+                margin-bottom: 1rem;
+            }
+
+            .form-group input,
+            .form-group select {
+                width: 100%;
+            }
+        }
+
+        /* Improved Touch Targets */
+        @media (hover: none) {
+            .nav-link {
+                padding: 1rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .contract-card {
+                padding: 1.25rem;
+            }
+
+            button {
+                min-height: 44px;
+            }
+
+            input, select {
+                min-height: 44px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <img src="../mfc-b.png" alt="Morningside Foundry">
+                <div class="title-group">
+                    <div class="brand">GovSet</div>
+                    <div class="subtitle">Contract Management</div>
+                </div>
+            </div>
+
+            <a href="../index.html" class="nav-link">
+                Home
+            </a>
+
+            <a href="contracts.html" class="nav-link" style="border-color: var(--accent)">
+                Contracts
+            </a>
+
+            <a href="../datasets/datasets.html" class="nav-link">
+                View Datasets
+            </a>
+
+            <a href="#" class="nav-link">
+                Ask Chat
+            </a>
+
+            <div class="agency-cta">
+                <h3 style="margin-bottom: 0.5rem">Government Agency?</h3>
+                <p style="opacity: 0.7; font-size: 0.9em">Update your emergency contact information here</p>
+                <button>Update Agency Info</button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <h1>Contract Management</h1>
+            
+            <div class="contract-controls">
+                <input type="text" class="search-input" placeholder="Search contracts...">
+                <button class="add-contract-btn" id="addContractBtn">Add Contract</button>
+            </div>
+
+            <div class="contracts-grid" id="contractsGrid">
+                <!-- Contracts will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Contract Modal -->
+    <div class="modal" id="addContractModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Contract</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="addContractForm">
+                <div class="form-group">
+                    <label>Contract Title</label>
+                    <input type="text" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label>Contractor</label>
+                    <input type="text" name="contractor" required>
+                </div>
+                <div class="form-group">
+                    <label>Value</label>
+                    <input type="number" name="value" required>
+                </div>
+                <div class="form-group">
+                    <label>Start Date</label>
+                    <input type="date" name="startDate" required>
+                </div>
+                <div class="form-group">
+                    <label>End Date</label>
+                    <input type="date" name="endDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select name="status" required>
+                        <option value="active">Active</option>
+                        <option value="pending">Pending</option>
+                        <option value="expired">Expired</option>
+                    </select>
+                </div>
+                <button type="submit" class="add-contract-btn">Add Contract</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        Built by the <a href="https://morningsidehq.com" target="_blank" style="color: var(--accent)">Morningside Foundry</a>
+    </footer>
+
+    <script src="scripts.js"></script>
+    <script>
+        document.querySelectorAll('.nav-link').forEach(element => {
+            if (!element.getAttribute('href') || element.getAttribute('href') === '#') {
+                element.addEventListener('click', (e) => e.preventDefault());
+                
+                tippy(element, {
+                    content: 'Coming Soon!',
+                    theme: 'light',
+                    placement: 'right',
+                    arrow: true,
+                    delay: [200, 0]
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

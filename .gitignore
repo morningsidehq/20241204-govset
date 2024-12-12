@@ -29,3 +29,4 @@ fonts/
 
 # FOIA directory
 foia/
+server.py
